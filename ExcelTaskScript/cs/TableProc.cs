@@ -63,9 +63,6 @@ class TableProc : FuncBase
                         .AddHours(19);
                 }
                 DateTime dv = new DateTime();
-                //dv.AddHours(5);
-                //dv.AddMilliseconds(tmN.Subtract(tm).Millisecond);
-                //dv.AddMilliseconds(tmN.Subtract(tm).TotalMilliseconds);
                 dv = dv.AddHours(0)
                     .AddMilliseconds(tmN.Subtract(tm).TotalMilliseconds);
                 string nm = nmStack[i];
@@ -137,10 +134,6 @@ class TableProc : FuncBase
                 SetRange("AF" + (i + START), tm.ToString("HH:mm"));
                 SetRange("AG" + (i + START), tmN.ToString("HH:mm"));
                 SetRange("AH" + (i + START), dv.ToString("HH:mm"));
-                //SetRange("AE" + (i + START), dv.ToString());
-                //SetRange("AF" + (i + START), tm.ToString());
-                //SetRange("AG" + (i + START), tmN.ToString());
-                //SetRange("AH" + (i + START), dv.ToString());
             }
         }
     }
@@ -164,9 +157,6 @@ class TableProc : FuncBase
                     .AddHours(10)
                     .AddMinutes((i - from) * 5);
                 tmStack.Add(tm);// 0, 0, 0, 15, (i - from) * 5, 0, DateTimeKind.Utc);
-                //tmStack.Add(new DateTime());// 0, 0, 0, 15, (i - from) * 5, 0, DateTimeKind.Utc);
-                //tmStack[recIndex].AddHours(15);
-                //tmStack[recIndex].AddMinutes((i - from) * 5);
                 smStack.Add(sm);
                 recIndex++;
             }
@@ -188,9 +178,8 @@ class TableProc : FuncBase
                     tmN = new DateTime()
                         .AddHours(19);
                 }
-                DateTime dv = new DateTime();// 0, 0, 0, 15, (i - from) * 5, 0, DateTimeKind.Utc);
-                                             //dv.AddMilliseconds(tmN.Millisecond - tm.Millisecond);
-                                             //dv.AddMilliseconds(tmN.Subtract(tm).TotalMilliseconds);
+                DateTime dv = new DateTime();
+
                 dv = dv.AddHours(0)
                   .AddMilliseconds(tmN.Subtract(tm).TotalMilliseconds);
                 string sm = smStack[i];
