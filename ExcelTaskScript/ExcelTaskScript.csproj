@@ -44,10 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="script\TableProc.cs" />
-    <Compile Include="script\FuncBase.cs" />
-    <Compile Include="script\_Dummy.cs" />
-    <None Include="Program.csx" />
+    <Compile Include="cs\TableProc.cs" />
+    <Compile Include="cs\FuncBase.cs" />
+    <Compile Include="cs\_Dummy.cs" />
+    <None Include="WriteAct.csx" />
+    <None Include="WritePlan.csx" />
+    <None Include="csx\Base.csx" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
