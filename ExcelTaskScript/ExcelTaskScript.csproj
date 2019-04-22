@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GanttReload.csx" />
     <Compile Include="cs\TableProc.cs" />
     <Compile Include="cs\FuncBase.cs" />
     <Compile Include="cs\_Dummy.cs" />
