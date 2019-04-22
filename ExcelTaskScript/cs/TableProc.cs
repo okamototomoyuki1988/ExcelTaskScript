@@ -130,10 +130,10 @@ class TableProc : FuncBase
 
                 SetRange("AC" + (i + START), "");
                 SetRange("AD" + (i + START), "");
-                SetRange("AE" + (i + START), "'" + dv.ToString("HH:mm"));
-                SetRange("AF" + (i + START), "'" + tm.ToString("HH:mm"));
-                SetRange("AG" + (i + START), "'" + tmN.ToString("HH:mm"));
-                SetRange("AH" + (i + START), "'" + dv.ToString("HH:mm"));
+                SetRange("AE" + (i + START), dv.ToString("HH:mm"));
+                SetRange("AF" + (i + START), tm.ToString("HH:mm"));
+                SetRange("AG" + (i + START), tmN.ToString("HH:mm"));
+                SetRange("AH" + (i + START), dv.ToString("HH:mm"));
             }
         }
     }
@@ -186,9 +186,9 @@ class TableProc : FuncBase
 
                 SetRange("AN" + (i + START), sm);
                 // 隙間
-                SetRange("AX" + (i + START), "'" + tm.ToString("HH:mm"));
-                SetRange("AY" + (i + START), "'" + tmN.ToString("HH:mm"));
-                SetRange("AZ" + (i + START), "'" + dv.ToString("HH:mm"));
+                SetRange("AX" + (i + START), tm.ToString("HH:mm"));
+                SetRange("AY" + (i + START), tmN.ToString("HH:mm"));
+                SetRange("AZ" + (i + START), dv.ToString("HH:mm"));
             }
         }
 
