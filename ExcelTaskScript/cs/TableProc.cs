@@ -71,9 +71,9 @@ class TableProc : FuncBase
                 string sm = smStack[i];
                 if (nm != "業務" && bg.IsNullOrEmpty() && md.IsNullOrEmpty() && sm.IsNullOrEmpty())
                 {
-                    SetRange("Z" + (i + START), nm);
-                    SetRange("AA" + (i + START), "");
-                    SetRange("AB" + (i + START), "");
+                    SetRange("AZ" + (i + START), nm);
+                    SetRange("BA" + (i + START), "");
+                    SetRange("BB" + (i + START), "");
                 }
                 else if (nm == "業務" && bg.IsNullOrEmpty() && md.IsNullOrEmpty() && sm.IsNullOrEmpty())
                 {
@@ -109,9 +109,9 @@ class TableProc : FuncBase
                         md = "↓";
                     }
 
-                    SetRange("Z" + (i + START), prevBg);
-                    SetRange("AA" + (i + START), prevMd);
-                    SetRange("AB" + (i + START), prevSm);
+                    SetRange("AZ" + (i + START), prevBg);
+                    SetRange("BA" + (i + START), prevMd);
+                    SetRange("BB" + (i + START), prevSm);
                 }
                 else
                 {
@@ -123,17 +123,17 @@ class TableProc : FuncBase
                     {
                         md = "↓";
                     }
-                    SetRange("Z" + (i + START), bg);
-                    SetRange("AA" + (i + START), md);
-                    SetRange("AB" + (i + START), sm);
+                    SetRange("AZ" + (i + START), bg);
+                    SetRange("BA" + (i + START), md);
+                    SetRange("BB" + (i + START), sm);
                 }
 
-                SetRange("AC" + (i + START), "");
-                SetRange("AD" + (i + START), "");
-                SetRange("AE" + (i + START), dv.ToString("HH:mm"));
-                SetRange("AF" + (i + START), tm.ToString("HH:mm"));
-                SetRange("AG" + (i + START), tmN.ToString("HH:mm"));
-                SetRange("AH" + (i + START), dv.ToString("HH:mm"));
+                SetRange("BC" + (i + START), "");
+                SetRange("BD" + (i + START), "");
+                SetRange("BE" + (i + START), dv.ToString("HH:mm"));
+                SetRange("BF" + (i + START), tm.ToString("HH:mm"));
+                SetRange("BG" + (i + START), tmN.ToString("HH:mm"));
+                SetRange("BH" + (i + START), dv.ToString("HH:mm"));
             }
         }
     }
@@ -184,11 +184,11 @@ class TableProc : FuncBase
                   .AddMilliseconds(tmN.Subtract(tm).TotalMilliseconds);
                 string sm = smStack[i];
 
-                SetRange("AN" + (i + START), sm);
+                SetRange("BN" + (i + START), sm);
                 // 隙間
-                SetRange("AX" + (i + START), tm.ToString("HH:mm"));
-                SetRange("AY" + (i + START), tmN.ToString("HH:mm"));
-                SetRange("AZ" + (i + START), dv.ToString("HH:mm"));
+                SetRange("BX" + (i + START), tm.ToString("HH:mm"));
+                SetRange("BY" + (i + START), tmN.ToString("HH:mm"));
+                SetRange("BZ" + (i + START), dv.ToString("HH:mm"));
             }
         }
 
