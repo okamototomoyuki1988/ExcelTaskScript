@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-class TaskProc : FuncBase
+class TaskProc : ProcBase
 {
     // 計画出力
     public void WritePlan()
