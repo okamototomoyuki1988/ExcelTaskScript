@@ -99,7 +99,7 @@ class GanttProc : ProcBase
 
             if (item.actEnd == default)
             {
-                if (i == 0)
+                if (prevI == -1)
                 {
                     item.planStart = startDate;
                 }
