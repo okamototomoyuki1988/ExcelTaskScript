@@ -10,10 +10,9 @@ class TaskProc : ProcBase
     // 計画出力
     public void WritePlan()
     {
-        List<string> nmStack = new List<string>(); // 慣例
-        List<string> bgStack = new List<string>(); // 大項目
-        List<string> mdStack = new List<string>(); // 中項目
+        List<string> nmStack = new List<string>(); // 大項目
         List<string> smStack = new List<string>(); // 小項目
+        List<string> fnStack = new List<string>(); // 終了条件
         List<DateTime> tmStack = new List<DateTime>(); // 慣例
         int from = _ToN("E");
         int to = _ToN("DH");
@@ -23,12 +22,9 @@ class TaskProc : ProcBase
         {
             string a = _ToA(i);
             string nm = GetRange(a + 4);
-            string bg = GetRange(a + 6);
-            string md = GetRange(a + 7);
-            string sm = GetRange(a + 8);
+            string sm = GetRange(a + 5);
+            string fn = GetRange(a + 6);
             if (nm.IsNotEmpty() ||
-                bg.IsNotEmpty() ||
-                md.IsNotEmpty() ||
                 sm.IsNotEmpty())
             {
                 DateTime tm = new DateTime();
@@ -36,19 +32,16 @@ class TaskProc : ProcBase
                   .AddMinutes((i - from) * 5);
                 tmStack.Add(tm);
                 nmStack.Add(nm);
-                bgStack.Add(bg);
-                mdStack.Add(md);
                 smStack.Add(sm);
+                fnStack.Add(fn);
                 recIndex++;
             }
         }
         // 最後の日付追加
-        const int START = 12;
+        const int START = 10;
         for (int i = 0; i < nmStack.Count; i++)
         {
             if (nmStack[i].IsNotEmpty() ||
-                bgStack[i].IsNotEmpty() ||
-                mdStack[i].IsNotEmpty() ||
                 smStack[i].IsNotEmpty())
             {
                 DateTime tm = tmStack[i];
@@ -66,79 +59,83 @@ class TaskProc : ProcBase
                 dv = dv.AddHours(0)
                     .AddMilliseconds(tmN.Subtract(tm).TotalMilliseconds);
                 string nm = nmStack[i];
-                string bg = bgStack[i];
-                string md = mdStack[i];
                 string sm = smStack[i];
-                if (nm != "業務" && bg.IsNullOrEmpty() && md.IsNullOrEmpty() && sm.IsNullOrEmpty())
+                string fn = fnStack[i];
+                if (nm != "実務" && nm != "その他" && sm.IsNullOrEmpty())
                 {
-                    SetRange("AZ" + (i + START), nm);
-                    SetRange("BA" + (i + START), "");
-                    SetRange("BB" + (i + START), "");
+                    if (nm == "昼休憩")
+                    {
+                        SetRange("AZ" + (i + START), "昼休憩");
+                        SetRange("BA" + (i + START), "");
+                        SetRange("BB" + (i + START), "");
+                    }
+                    else
+                    {
+                        SetRange("AZ" + (i + START), nm);
+                        SetRange("BA" + (i + START), nm);
+                        SetRange("BB" + (i + START), "時間経過");
+                    }
                 }
-                else if (nm == "業務" && bg.IsNullOrEmpty() && md.IsNullOrEmpty() && sm.IsNullOrEmpty())
+                else if ((nm == "実務" || nm == "その他") && sm.IsNullOrEmpty())
                 {
                     // 一つ前を取得
-                    string prevBg = null;
-                    string prevMd = null;
+                    string prevNm = null;
                     string prevSm = null;
-                    for (var j = i - 1; j >= 0; j--)
+                    string prevFn = null;
+                    for (var j = i; j >= 0; j--)
                     {
-                        if (prevBg == null && bgStack[j].IsNotEmpty())
+                        if (nmStack[j] != "昼休憩" && nmStack[j] != "休憩" && nmStack[j] != "朝礼")
                         {
-                            prevBg = bgStack[j];
+                            if (prevNm == null && nmStack[j].IsNotEmpty())
+                            {
+                                prevNm = nmStack[j];
+                            }
+                            if (prevSm == null && smStack[j].IsNotEmpty())
+                            {
+                                prevSm = smStack[j];
+                            }
+                            if (prevFn == null && fnStack[j].IsNotEmpty())
+                            {
+                                prevFn = fnStack[j];
+                            }
+                            if (prevNm != null && prevSm != null)
+                            {
+                                break;
+                            }
                         }
-                        if (prevMd == null && mdStack[j].IsNotEmpty())
-                        {
-                            prevMd = mdStack[j];
-                        }
-                        if (prevSm == null && smStack[j].IsNotEmpty())
-                        {
-                            prevSm = smStack[j];
-                        }
-                        if (prevBg != null)
-                        {
-                            break;
-                        }
-                    }
-                    if (bg.IsNullOrEmpty() && (md.IsNotEmpty() || sm.IsNotEmpty()))
-                    {
-                        bg = "↓";
-                    }
-                    if (md.IsNullOrEmpty() && sm.IsNotEmpty())
-                    {
-                        md = "↓";
                     }
 
-                    SetRange("AZ" + (i + START), prevBg);
-                    SetRange("BA" + (i + START), prevMd);
-                    SetRange("BB" + (i + START), prevSm);
+                    SetRange("AZ" + (i + START), prevNm);
+                    SetRange("BA" + (i + START), prevSm);
+                    SetRange("BB" + (i + START), prevFn);
                 }
                 else
                 {
-                    if (bg.IsNullOrEmpty() && (md.IsNotEmpty() || sm.IsNotEmpty()))
+                    // 一つ前を取得
+                    string prevNm = null;
+                    for (var j = i; j >= 0; j--)
                     {
-                        bg = "↓";
+                        if (prevNm == null && nmStack[j].IsNotEmpty())
+                        {
+                            prevNm = nmStack[j];
+                            break;
+                        }
                     }
-                    if (md.IsNullOrEmpty() && sm.IsNotEmpty())
-                    {
-                        md = "↓";
-                    }
-                    SetRange("AZ" + (i + START), bg);
-                    SetRange("BA" + (i + START), md);
-                    SetRange("BB" + (i + START), sm);
+
+                    SetRange("AZ" + (i + START), prevNm);
+                    SetRange("BA" + (i + START), sm);
+                    SetRange("BB" + (i + START), fn);
                 }
 
-                SetRange("BC" + (i + START), "");
-                SetRange("BD" + (i + START), "");
-                SetRange("BE" + (i + START), dv.ToString("HH:mm"));
-                SetRange("BF" + (i + START), tm.ToString("HH:mm"));
-                SetRange("BG" + (i + START), tmN.ToString("HH:mm"));
-                SetRange("BH" + (i + START), dv.ToString("HH:mm"));
+                SetRange("BC" + (i + START), "未完了");
+                SetRange("BD" + (i + START), dv.ToString("HH:mm"));
+                SetRange("BE" + (i + START), tm.ToString("HH:mm"));
+                SetRange("BF" + (i + START), tmN.ToString("HH:mm"));
             }
         }
     }
 
-    // 計画出力
+    // 実働出力
     public void WriteAct()
     {
         List<string> smStack = new List<string>(); // 小項目
@@ -150,7 +147,7 @@ class TaskProc : ProcBase
         for (int i = from; i <= to; i++)
         {
             string a = _ToA(i);
-            string sm = GetRange(a + 10);
+            string sm = GetRange(a + 8);
             if (sm.IsNotEmpty())
             {
                 DateTime tm = new DateTime()
@@ -162,7 +159,7 @@ class TaskProc : ProcBase
             }
         }
         // 最後の日付追加
-        const int START = 12;
+        const int START = 10;
         for (int i = 0; i < smStack.Count; i++)
         {
             if (smStack[i].IsNotEmpty())
